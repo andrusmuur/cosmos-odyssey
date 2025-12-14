@@ -1,11 +1,26 @@
 package com.example.cosmos_odyssey.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.Instant;
+import java.util.Map;
+
 public class Provider {
     private String id;
-    private Company company;
+    private String companyName;
     private float price;
-    private String flightStart;
-    private String flightEnd;
+
+    @JsonProperty("company")
+    private void unpackNested(Map<String, String> company) {
+        this.companyName = company.get("name");
+    }
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSSSSSS][.SSSSSS][.SSSSS][.SSSS]'Z'", timezone = "UTC")
+    private Instant flightStart;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSSSSSS][.SSSSSS][.SSSSS][.SSSS]'Z'", timezone = "UTC")
+    private Instant flightEnd;
 
     public String getId() {
         return id;
@@ -13,14 +28,6 @@ public class Provider {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
     }
 
     public float getPrice() {
@@ -31,19 +38,27 @@ public class Provider {
         this.price = price;
     }
 
-    public String getFlightStart() {
+    public Instant getFlightStart() {
         return flightStart;
     }
 
-    public void setFlightStart(String flightStart) {
+    public void setFlightStart(Instant flightStart) {
         this.flightStart = flightStart;
     }
 
-    public String getFlightEnd() {
+    public Instant getFlightEnd() {
         return flightEnd;
     }
 
-    public void setFlightEnd(String flightEnd) {
+    public void setFlightEnd(Instant flightEnd) {
         this.flightEnd = flightEnd;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }
