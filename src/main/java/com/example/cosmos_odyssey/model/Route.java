@@ -1,55 +1,71 @@
 package com.example.cosmos_odyssey.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Map;
+import java.util.Set;
 
+@Table("ROUTES")
 public class Route {
-    private String id;
-    private Provider[] providers;
-    private String from;
-    private String to;
+
+    @JsonIgnore
+    @Id
+    private int id;
+
+    @MappedCollection(idColumn = "ROUTE_ID")
+    private Set<Provider> providers;
+
+    private String fromPlanet;
+
+    private String toPlanet;
+
     private long distance;
+
 
     @JsonProperty("routeInfo")
     private void unpackNested(Map<String, Object> routeInfo) {
         Map<String, String> from = (Map<String, String>) routeInfo.get("from");
         Map<String, String> to = (Map<String, String>) routeInfo.get("to");
         this.distance = Long.parseLong(routeInfo.get("distance").toString());
-        this.from = from.get("name");
-        this.to = to.get("name");
+        this.fromPlanet = from.get("name");
+        this.toPlanet = to.get("name");
     }
 
-    public String getId() {
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Provider[] getProviders() {
+    public Set<Provider> getProviders() {
         return providers;
     }
 
-    public void setProviders(Provider[] providers) {
+    public void setProviders(Set<Provider> providers) {
         this.providers = providers;
     }
 
-    public String getFrom() {
-        return from;
+    public String getFromPlanet() {
+        return fromPlanet;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setFromPlanet(String fromPlanet) {
+        this.fromPlanet = fromPlanet;
     }
 
-    public String getTo() {
-        return to;
+    public String getToPlanet() {
+        return toPlanet;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setToPlanet(String toPlanet) {
+        this.toPlanet = toPlanet;
     }
 
     public long getDistance() {

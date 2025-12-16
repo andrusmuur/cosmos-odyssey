@@ -1,20 +1,24 @@
 package com.example.cosmos_odyssey.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
 import java.util.Map;
 
+@Table("PROVIDERS")
 public class Provider {
-    private String id;
-    private String companyName;
-    private float price;
 
-    @JsonProperty("company")
-    private void unpackNested(Map<String, String> company) {
-        this.companyName = company.get("name");
-    }
+    @JsonIgnore
+    @Id
+    private int id;
+
+    private String companyName;
+
+    private float price;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSSSSSS][.SSSSSS][.SSSSS][.SSSS]'Z'", timezone = "UTC")
     private Instant flightStart;
@@ -22,11 +26,18 @@ public class Provider {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSSSSSS][.SSSSSS][.SSSSS][.SSSS]'Z'", timezone = "UTC")
     private Instant flightEnd;
 
-    public String getId() {
+
+    @JsonProperty("company")
+    private void unpackNested(Map<String, String> company) {
+        this.companyName = company.get("name");
+    }
+
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

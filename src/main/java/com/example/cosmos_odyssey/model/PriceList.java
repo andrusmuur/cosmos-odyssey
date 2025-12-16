@@ -1,23 +1,33 @@
 package com.example.cosmos_odyssey.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
+import java.util.Set;
 
+@Table("PRICE_LISTS")
 public class PriceList {
 
-    private String id;
+    @JsonIgnore
+    @Id
+    private int id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSSSSSS][.SSSSSS][.SSSSS][.SSSS]'Z'", timezone = "UTC")
     private Instant validUntil;
 
-    private Route[] legs;
+    @MappedCollection(idColumn = "PRICE_LIST_ID")
+    private Set<Route> legs;
 
-    public String getId() {
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -29,11 +39,11 @@ public class PriceList {
         this.validUntil = validUntil;
     }
 
-    public Route[] getLegs() {
+    public Set<Route> getLegs() {
         return legs;
     }
 
-    public void setLegs(Route[] legs) {
+    public void setLegs(Set<Route> legs) {
         this.legs = legs;
     }
 }
