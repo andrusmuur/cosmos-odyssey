@@ -8,7 +8,14 @@ import java.time.Instant;
 
 public interface PriceListRepository extends CrudRepository<PriceList, Integer> {
 
-    @Query("SELECT VALID_UNTIL FROM PRICE_LISTS ORDER BY VALID_UNTIL DESC LIMIT 1;")
+    @Query("SELECT valid_until FROM price_lists " +
+            "ORDER BY valid_until DESC " +
+            "LIMIT 1;")
     Instant getLatestPriceListExpiryDate();
+
+    @Query("SELECT id FROM price_lists " +
+            "ORDER BY valid_until DESC " +
+            "LIMIT 1;")
+    int getLatestPriceListId();
 
 }

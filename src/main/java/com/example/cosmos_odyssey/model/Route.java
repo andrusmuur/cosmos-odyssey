@@ -1,6 +1,5 @@
 package com.example.cosmos_odyssey.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
@@ -12,7 +11,7 @@ import java.util.Set;
 @Table("ROUTES")
 public class Route {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     private int id;
 

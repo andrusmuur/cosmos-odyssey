@@ -1,7 +1,6 @@
 package com.example.cosmos_odyssey.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -12,7 +11,7 @@ import java.util.Map;
 @Table("PROVIDERS")
 public class Provider {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     private int id;
 
