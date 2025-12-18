@@ -13,4 +13,8 @@ public interface RouteRepository extends CrudRepository<Route, Integer> {
             "AND to_planet = :destination " +
             "AND price_list_id = :priceListId;")
     List<Route> getValidRoutes(String origin, String destination, int priceListId);
+
+    @Query("SELECT * FROM routes " +
+            "WHERE price_list_id = :priceListId;")
+    List<Route> getValidRoutes(int priceListId);
 }

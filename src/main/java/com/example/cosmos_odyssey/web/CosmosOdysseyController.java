@@ -18,8 +18,8 @@ public class CosmosOdysseyController {
     }
 
     @GetMapping("/routes")
-    public List<Route> getValidRoute(@RequestParam("origin") String origin, @RequestParam("destination") String destination) {
-        return routeService.getValidRoutes(origin, destination);
+    public List<List<Route>> getValidPaths(@RequestParam("origin") String origin, @RequestParam("destination") String destination) {
+        return routeService.getAllPaths(origin, destination);
     }
 
 }
