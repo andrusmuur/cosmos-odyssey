@@ -1,6 +1,7 @@
 package com.example.cosmos_odyssey.service;
 
 import com.example.cosmos_odyssey.model.Route;
+import com.example.cosmos_odyssey.model.RouteInfo;
 import com.example.cosmos_odyssey.repository.RouteRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,31 +27,36 @@ public class RouteService {
         return routeRepository.getValidRoutes(priceListService.getLatestPriceListId());
     }
 
-    public List<List<Route>> getAllPaths(String origin, String destination) {
-        List<Route> validRoutes = getValidRoutes();
-        List<List<Route>> paths = new ArrayList<>();
+    public List<RouteInfo> getValidRouteInfo() {
+        priceListService.ensurePriceListIsValid();
+        return  routeRepository.getRouteInfo(priceListService.getLatestPriceListId());
+    }
+
+    public List<List<RouteInfo>> getAllPaths(String origin, String destination) {
+        List<RouteInfo> validRoutes = getValidRouteInfo();
+        List<List<RouteInfo>> paths = new ArrayList<>();
         findAllPaths(origin, destination, validRoutes, paths, new ArrayList<>());
         return paths;
     }
 
-    private void findAllPaths(String origin, String destination, List<Route> validRoutes, List<List<Route>> paths, List<Route> path) {
+    private void findAllPaths(String origin, String destination, List<RouteInfo> validRoutes, List<List<RouteInfo>> paths, List<RouteInfo> path) {
         if (origin.equals(destination)) {
             paths.add(new ArrayList<>(path));
             return;
         }
 
-        for (Route route: validRoutes) {
-            if(route.getFromPlanet().equals(origin) && planetIsNotPassedThrough(route.getToPlanet(), path)) {
-                path.add(route);
-                findAllPaths(route.getToPlanet(),destination, validRoutes, paths, path);
+        for (RouteInfo routeInfo: validRoutes) {
+            if(routeInfo.getFromPlanet().equals(origin) && planetIsNotPassedThrough(routeInfo.getToPlanet(), path)) {
+                path.add(routeInfo);
+                findAllPaths(routeInfo.getToPlanet(),destination, validRoutes, paths, path);
                 path.removeLast();
             }
         }
     }
 
-    private boolean planetIsNotPassedThrough(String planet, List<Route> path) {
-        for (Route route: path) {
-            if(route.getFromPlanet().equals(planet) || route.getToPlanet().equals(planet)) {
+    private boolean planetIsNotPassedThrough(String planet, List<RouteInfo> path) {
+        for (RouteInfo routeInfo: path) {
+            if(routeInfo.getFromPlanet().equals(planet) || routeInfo.getToPlanet().equals(planet)) {
                 return false;
             }
         }
