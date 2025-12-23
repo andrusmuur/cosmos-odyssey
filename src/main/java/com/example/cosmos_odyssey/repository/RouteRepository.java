@@ -2,7 +2,6 @@ package com.example.cosmos_odyssey.repository;
 
 import com.example.cosmos_odyssey.model.Route;
 import com.example.cosmos_odyssey.model.RouteInfo;
-import com.example.cosmos_odyssey.model.TravelPath;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 

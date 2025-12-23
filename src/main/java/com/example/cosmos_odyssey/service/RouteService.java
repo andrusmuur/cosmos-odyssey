@@ -2,6 +2,7 @@ package com.example.cosmos_odyssey.service;
 
 import com.example.cosmos_odyssey.model.Route;
 import com.example.cosmos_odyssey.model.RouteInfo;
+import com.example.cosmos_odyssey.model.TravelPath;
 import com.example.cosmos_odyssey.repository.RouteRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +12,12 @@ import java.util.*;
 public class RouteService {
     private final RouteRepository routeRepository;
     private final PriceListService priceListService;
+    private final ProviderService providerService;
 
-    public RouteService(RouteRepository routeRepository, PriceListService priceListService) {
+    public RouteService(RouteRepository routeRepository, PriceListService priceListService, ProviderService providerService) {
         this.routeRepository = routeRepository;
         this.priceListService = priceListService;
+        this.providerService = providerService;
     }
 
     public List<Route> getValidRoutes(String origin, String destination) {
@@ -32,11 +35,18 @@ public class RouteService {
         return  routeRepository.getRouteInfo(priceListService.getLatestPriceListId());
     }
 
-    public List<List<RouteInfo>> getAllPaths(String origin, String destination) {
+    public List<TravelPath> getAllPaths(String origin, String destination) {
         List<RouteInfo> validRoutes = getValidRouteInfo();
         List<List<RouteInfo>> paths = new ArrayList<>();
         findAllPaths(origin, destination, validRoutes, paths, new ArrayList<>());
-        return paths;
+
+        List<TravelPath> travelPaths = new ArrayList<>();
+        for (List<RouteInfo> path: paths) {
+            List<TravelPath> newPaths = providerService.getAllProviders(path);
+            travelPaths.addAll(newPaths);
+        }
+
+        return travelPaths;
     }
 
     private void findAllPaths(String origin, String destination, List<RouteInfo> validRoutes, List<List<RouteInfo>> paths, List<RouteInfo> path) {

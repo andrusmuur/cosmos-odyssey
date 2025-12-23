@@ -1,7 +1,6 @@
 package com.example.cosmos_odyssey.web;
 
-import com.example.cosmos_odyssey.model.Route;
-import com.example.cosmos_odyssey.model.RouteInfo;
+import com.example.cosmos_odyssey.model.TravelPath;
 import com.example.cosmos_odyssey.service.RouteService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +18,7 @@ public class CosmosOdysseyController {
     }
 
     @GetMapping("/routes")
-    public List<List<RouteInfo>> getValidPaths(@RequestParam("origin") String origin, @RequestParam("destination") String destination) {
+    public List<TravelPath> getValidPaths(@RequestParam("origin") String origin, @RequestParam("destination") String destination) {
         return routeService.getAllPaths(origin, destination);
     }
-
 }
