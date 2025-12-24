@@ -4,21 +4,26 @@
     <title>Cosmos Odyssey</title>
 </head>
 <body>
-    <form action="/routes" method="get">
-        <div>
-            <label for="origin">Origin:</label>
-            <input type="text" id="origin" name="origin" required>
-        </div>
+    <div>
+        <label for="origin">Origin:</label>
+        <input type="text" id="origin" name="origin" required>
+    </div>
 
-        <div>
-            <label for="destination">Destination:</label>
-            <input type="text" id="destination" name="destination" required>
-        </div>
+    <div>
+        <label for="destination">Destination:</label>
+        <input type="text" id="destination" name="destination" required>
+    </div>
 
-        <div>
-            <input type="submit">
-        </div>
+    <div>
+        <button onclick="fetchRoutes()">Find routes</button>
+    </div>
 
-    </form>
+    <div id="routeTable">
+
+    </div>
+
+
+
+    <script src="index.js" type="text/javascript"></script>
 </body>
 </html>
