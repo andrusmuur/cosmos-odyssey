@@ -1,7 +1,5 @@
 async function fetchRoutes() {
 
-    document.getElementById("routeTable").innerHTML = '';
-
     try{
         const origin = document.getElementById("origin").value;
         const destination = document.getElementById("destination").value;
@@ -24,6 +22,9 @@ async function fetchRoutes() {
 
             for (const route of routes) {
                 tr = table.insertRow(-1);
+                tr.dataset.route = JSON.stringify(route);
+                tr.setAttribute("onclick", "selectRow(this);");
+                tr.setAttribute("class", "routeRow");
 
                 var cell = tr.insertCell(-1);
                 cell.innerHTML = route.path.map((route) => route.fromPlanet + "->" + route.toPlanet);
@@ -33,8 +34,10 @@ async function fetchRoutes() {
 
                 cell = tr.insertCell(-1);
                 cell.innerHTML = route.totalPrice;
+
                 cell = tr.insertCell(-1);
                 cell.innerHTML = route.totalDistance;
+
                 cell = tr.insertCell(-1);
                 cell.innerHTML = route.totalTravelTimeInDays;
             }
@@ -47,4 +50,8 @@ async function fetchRoutes() {
     catch(error) {
         console.error(error);
     }
+}
+
+function selectRow(row) {
+    console.log(row.dataset)
 }
