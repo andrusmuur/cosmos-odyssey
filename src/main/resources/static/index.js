@@ -9,7 +9,6 @@ async function fetchRoutes() {
             throw new Error("Could not fetch resource");
         } else {
             const routes = await response.json();
-            console.log(routes);
             var table = document.createElement("table");
             var tr = table.insertRow(-1);
 
@@ -42,9 +41,9 @@ async function fetchRoutes() {
                 cell.innerHTML = route.totalTravelTimeInDays;
             }
 
-            var divContainer = document.getElementById("routeTable");
-            divContainer.innerHTML = "";
-            divContainer.appendChild(table);
+            var routeTable = document.getElementById("routeTable");
+            routeTable.innerHTML = "";
+            routeTable.appendChild(table);
         }
     }
     catch(error) {
@@ -52,6 +51,32 @@ async function fetchRoutes() {
     }
 }
 
-function selectRow(row) {
-    console.log(row.dataset)
+async function selectRow(row) {
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    if (firstName == "" || lastName == "") {
+        alert("Please enter your first and last name to make a reservation")
+        return;
+    }
+
+    if (confirm("Are you sure you want to make a reservation?")) {
+        const response = await fetch("/reservation", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            travelPath: JSON.parse(row.dataset.route)})
+        });
+
+        if (!response.ok) {
+            alert("There was a problem with making the reservation, please try again");
+            throw new Error("Could not fetch resource");
+        } else {
+            alert("Reservation was made successfully");
+        }
+    }
 }

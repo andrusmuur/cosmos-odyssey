@@ -5,11 +5,11 @@ import java.time.Instant;
 import java.util.List;
 
 public class TravelPath {
-    private final List<RouteInfo> path;
-    private final List<Provider> pathProviders;
-    private final float totalPrice;
-    private final long totalDistance;
-    private final long totalTravelTimeInDays;
+    private List<RouteInfo> path;
+    private List<Provider> pathProviders;
+    private float totalPrice;
+    private long totalDistance;
+    private long totalTravelTimeInDays;
 
     public TravelPath(List<RouteInfo> path, List<Provider> pathProviders) {
         this.path = path;
@@ -40,19 +40,39 @@ public class TravelPath {
         return path;
     }
 
+    public void setPath(List<RouteInfo> path) {
+        this.path = path;
+    }
+
     public List<Provider> getPathProviders() {
         return pathProviders;
+    }
+
+    public void setPathProviders(List<Provider> pathProviders) {
+        this.pathProviders = pathProviders;
     }
 
     public float getTotalPrice() {
         return totalPrice;
     }
 
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public long getTotalDistance() {
         return totalDistance;
     }
 
+    public void setTotalDistance(long totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+
     public long getTotalTravelTimeInDays() {
         return totalTravelTimeInDays;
+    }
+
+    public void setTotalTravelTimeInDays(long totalTravelTimeInDays) {
+        this.totalTravelTimeInDays = totalTravelTimeInDays;
     }
 }
