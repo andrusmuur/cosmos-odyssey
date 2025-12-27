@@ -5,19 +5,30 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div>
+    <form id="routeForm">
         <label for="origin">Origin:</label>
         <input type="text" id="origin" name="origin" required>
-    </div>
 
-    <div>
         <label for="destination">Destination:</label>
         <input type="text" id="destination" name="destination" required>
-    </div>
 
-    <div>
-        <button onclick="fetchRoutes()">Find routes</button>
-    </div>
+        <br>
+
+        <input type="radio" id="price" name="sort_by" value="price" checked>
+        <label for="price">Price</label><br>
+        <input type="radio" id="distance" name="sort_by" value="distance">
+        <label for="distance">Distance</label><br>
+        <input type="radio" id="travel_time" name="sort_by" value="travel_time">
+        <label for="travel_time">Travel time</label>
+
+        <label for="company_name">Company name:</label>
+        <input type="text" id="company_name" name="company_name">
+
+        <br>
+
+        <input type="button" onclick="fetchRoutes()" value="Find routes">
+    </form>
+
 
     <br>
 

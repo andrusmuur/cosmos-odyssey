@@ -1,9 +1,15 @@
 async function fetchRoutes() {
 
     try{
-        const origin = document.getElementById("origin").value;
-        const destination = document.getElementById("destination").value;
-        const response = await fetch(`/routes?origin=${origin}&destination=${destination}`);
+
+        var formData = new FormData(document.getElementById("routeForm"));
+
+        const origin = formData.get("origin");
+        const destination = formData.get("destination");
+        const sortBy = formData.get("sort_by");
+        const companyName = formData.get("company_name")
+
+        const response = await fetch(`/routes?origin=${origin}&destination=${destination}&sortBy=${sortBy}&companyName=${companyName}`);
 
         if (!response.ok) {
             throw new Error("Could not fetch resource");

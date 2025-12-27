@@ -21,14 +21,14 @@ public class ProviderService {
         return providerRepository.getRouteProviders(routeId);
     }
 
-    public List<TravelPath> getAllProviders(List<RouteInfo> routes) {
+    public List<TravelPath> getAllProviders(List<RouteInfo> routes, String companyName) {
         List<TravelPath> travelPaths = new ArrayList<>();
         List<Provider> pathProviders = new ArrayList<>();
-        findAllProviders(routes, 0,pathProviders ,travelPaths);
+        findAllProviders(routes, 0,pathProviders ,travelPaths, companyName);
         return travelPaths;
     }
 
-    private void findAllProviders(List<RouteInfo> routes, int routeIndex, List<Provider> pathProviders, List<TravelPath> travelPaths) {
+    private void findAllProviders(List<RouteInfo> routes, int routeIndex, List<Provider> pathProviders, List<TravelPath> travelPaths, String companyName) {
         if (routeIndex >= routes.size()) {
             TravelPath travelPath = new TravelPath(new ArrayList<>(routes), new ArrayList<>(pathProviders));
             travelPaths.add(travelPath);
@@ -38,15 +38,23 @@ public class ProviderService {
         List<Provider> currentRouteProviders;
         RouteInfo currentRoute = routes.get(routeIndex);
         if (routeIndex == 0) {
-            currentRouteProviders = providerRepository.getRouteProviders(currentRoute.getRouteId());
+            if (companyName.isEmpty()) {
+                currentRouteProviders = providerRepository.getRouteProviders(currentRoute.getRouteId());
+            } else {
+                currentRouteProviders = providerRepository.getRouteProviders(currentRoute.getRouteId(), companyName);
+            }
         } else {
             Provider previousProvider = pathProviders.get(routeIndex - 1);
-            currentRouteProviders = providerRepository.getRouteProvidersAfterDate(currentRoute.getRouteId(), previousProvider.getFlightEnd());
+            if (companyName.isEmpty()) {
+                currentRouteProviders = providerRepository.getRouteProvidersAfterDate(currentRoute.getRouteId(), previousProvider.getFlightEnd());
+            } else {
+                currentRouteProviders = providerRepository.getRouteProvidersAfterDate(currentRoute.getRouteId(), previousProvider.getFlightEnd(), companyName);
+            }
         }
 
         for (Provider provider: currentRouteProviders) {
             pathProviders.add(provider);
-            findAllProviders(routes, routeIndex + 1, pathProviders, travelPaths);
+            findAllProviders(routes, routeIndex + 1, pathProviders, travelPaths, companyName);
             pathProviders.removeLast();
         }
     }

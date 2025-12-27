@@ -40,15 +40,27 @@ public class RouteService {
         return  routeRepository.getRouteInfo(priceListService.getLatestPriceListId());
     }
 
-    public List<TravelPath> getAllPaths(String origin, String destination) {
+    public List<TravelPath> getValidPaths(String origin, String destination, String sortBy, String companyName) {
         List<RouteInfo> validRoutes = getValidRouteInfo();
         List<List<RouteInfo>> paths = new ArrayList<>();
         findAllPaths(origin, destination, validRoutes, paths, new ArrayList<>());
 
         List<TravelPath> travelPaths = new ArrayList<>();
         for (List<RouteInfo> path: paths) {
-            List<TravelPath> newPaths = providerService.getAllProviders(path);
+            List<TravelPath> newPaths = providerService.getAllProviders(path, companyName);
             travelPaths.addAll(newPaths);
+        }
+
+        switch (sortBy) {
+            case "price":
+                travelPaths.sort(Comparator.comparing(TravelPath::getTotalPrice));
+                break;
+            case "distance":
+                travelPaths.sort(Comparator.comparing(TravelPath::getTotalDistance));
+                break;
+            case "travel_time":
+                travelPaths.sort(Comparator.comparing(TravelPath::getTotalTravelTimeInDays));
+                break;
         }
 
         return travelPaths;

@@ -17,4 +17,15 @@ public interface ProviderRepository extends CrudRepository<Provider, Integer> {
             "WHERE route_id = :routeId " +
             "AND flight_start > :date;")
     List<Provider> getRouteProvidersAfterDate(int routeId, Instant date);
+
+    @Query("SELECT * FROM providers " +
+            "WHERE route_id = :routeId " +
+            "AND company_name = :companyName;")
+    List<Provider> getRouteProviders(int routeId, String companyName);
+
+    @Query("SELECT * FROM providers " +
+            "WHERE route_id = :routeId " +
+            "AND flight_start > :date " +
+            "AND company_name = :companyName;")
+    List<Provider> getRouteProvidersAfterDate(int routeId, Instant date, String companyName);
 }

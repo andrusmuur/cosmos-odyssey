@@ -20,12 +20,12 @@ public class CosmosOdysseyController {
     }
 
     @GetMapping("/routes")
-    public List<TravelPath> getValidPaths(@RequestParam("origin") String origin, @RequestParam("destination") String destination) {
+    public List<TravelPath> getValidPaths(@RequestParam("origin") String origin, @RequestParam("destination") String destination, @RequestParam String sortBy, @RequestParam String companyName) {
         if (origin.length() > 1 && destination.length() > 1) {
             origin = origin.substring(0, 1).toUpperCase() + origin.substring(1).toLowerCase();
             destination = destination.substring(0, 1).toUpperCase() + destination.substring(1).toLowerCase();
         }
-        return routeService.getAllPaths(origin, destination);
+        return routeService.getValidPaths(origin, destination, sortBy, companyName);
     }
 
     @PostMapping("/reservation")
