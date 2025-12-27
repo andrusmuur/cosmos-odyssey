@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Reservations (
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     total_price DECIMAL(18, 2),
-    total_duration INT,
+    total_travel_time_in_seconds INT
 );
 
 CREATE TABLE IF NOT EXISTS Reservation_routes (

@@ -2,7 +2,7 @@ package com.example.cosmos_odyssey.web;
 
 import com.example.cosmos_odyssey.model.Reservation;
 import com.example.cosmos_odyssey.model.TravelPath;
-import com.example.cosmos_odyssey.service.PriceListService;
+import com.example.cosmos_odyssey.service.ReservationService;
 import com.example.cosmos_odyssey.service.RouteService;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +12,11 @@ import java.util.List;
 public class CosmosOdysseyController {
 
     private final RouteService routeService;
-    private final PriceListService priceListService;
+    private final ReservationService reservationService;
 
-    public CosmosOdysseyController(RouteService routeService, PriceListService priceListService) {
+    public CosmosOdysseyController(RouteService routeService, ReservationService reservationService) {
         this.routeService = routeService;
-        this.priceListService = priceListService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping("/routes")
@@ -29,10 +29,12 @@ public class CosmosOdysseyController {
     }
 
     @PostMapping("/reservation")
-    public void postReservation(@RequestBody Reservation reservation) {
-        //if (priceListService.latestPriceListIsExpired())
-        System.out.println(reservation.getFirstName());
-        System.out.println(reservation.getLastName());
-        System.out.println(reservation.getTravelPath());
+    public boolean postReservation(@RequestBody Reservation reservation) {
+        if (routeService.routesAreValid(reservation.getRoutes())) {
+            reservationService.saveReservation(reservation);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

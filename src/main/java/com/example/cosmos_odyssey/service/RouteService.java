@@ -1,11 +1,12 @@
 package com.example.cosmos_odyssey.service;
 
-import com.example.cosmos_odyssey.model.Route;
+import com.example.cosmos_odyssey.model.ReservationRoute;
 import com.example.cosmos_odyssey.model.RouteInfo;
 import com.example.cosmos_odyssey.model.TravelPath;
 import com.example.cosmos_odyssey.repository.RouteRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -20,14 +21,18 @@ public class RouteService {
         this.providerService = providerService;
     }
 
-    public List<Route> getValidRoutes(String origin, String destination) {
-        priceListService.ensurePriceListIsValid();
-        return routeRepository.getValidRoutes(origin, destination, priceListService.getLatestPriceListId());
+    public boolean routeIsExpired(int routeId) {
+        Instant priceListExpiryDateOfRoute = routeRepository.getPriceListExpiryDateOfRoute(routeId);
+        return priceListExpiryDateOfRoute == null || Instant.now().isAfter(priceListExpiryDateOfRoute);
     }
 
-    public List<Route> getValidRoutes() {
-        priceListService.ensurePriceListIsValid();
-        return routeRepository.getValidRoutes(priceListService.getLatestPriceListId());
+    public boolean routesAreValid(Set<ReservationRoute> routes) {
+        for (ReservationRoute route: routes) {
+            if(routeIsExpired(route.getRouteId())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<RouteInfo> getValidRouteInfo() {

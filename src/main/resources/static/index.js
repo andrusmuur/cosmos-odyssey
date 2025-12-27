@@ -67,16 +67,23 @@ async function selectRow(row) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-            firstName: firstName,
-            lastName: lastName,
-            travelPath: JSON.parse(row.dataset.route)})
+                firstName: firstName,
+                lastName: lastName,
+                travelPath: JSON.parse(row.dataset.route)})
         });
 
         if (!response.ok) {
             alert("There was a problem with making the reservation, please try again");
             throw new Error("Could not fetch resource");
         } else {
-            alert("Reservation was made successfully");
+            const reservationIsSaved = await response.json();
+            if (reservationIsSaved) {
+                alert("Reservation was made successfully");
+            } else {
+                alert("Price list is expired, please try again")
+                var routeTable = document.getElementById("routeTable");
+                routeTable.innerHTML = "";
+            }
         }
     }
 }

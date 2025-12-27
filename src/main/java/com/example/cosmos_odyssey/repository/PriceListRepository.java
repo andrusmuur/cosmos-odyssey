@@ -18,4 +18,10 @@ public interface PriceListRepository extends CrudRepository<PriceList, Integer> 
             "LIMIT 1;")
     int getLatestPriceListId();
 
+    @Query("SELECT id FROM price_lists " +
+            "ORDER BY valid_until ASC " +
+            "LIMIT 1;")
+    int getOldestPriceList();
+
+
 }

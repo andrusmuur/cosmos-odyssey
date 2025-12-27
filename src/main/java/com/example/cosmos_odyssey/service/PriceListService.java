@@ -10,9 +10,11 @@ import java.time.Instant;
 @Service
 public class PriceListService {
     private final PriceListRepository priceListRepository;
+    private final ReservationService reservationService;
 
-    public PriceListService(PriceListRepository priceListRepository) {
+    public PriceListService(PriceListRepository priceListRepository, ReservationService reservationService) {
         this.priceListRepository = priceListRepository;
+        this.reservationService = reservationService;
     }
 
     public boolean latestPriceListIsExpired() {
@@ -27,6 +29,13 @@ public class PriceListService {
                     .uri("https://cosmosodyssey.azurewebsites.net/api/v1.0/TravelPrices")
                     .retrieve()
                     .body(PriceList.class);
+
+            while (priceListRepository.count() >= 15) {
+                int oldestPriceListId = priceListRepository.getOldestPriceList();
+                reservationService.deleteByPriceList(oldestPriceListId);
+                priceListRepository.deleteById(oldestPriceListId);
+            }
+
             priceListRepository.save(newPriceList);
         }
     }
