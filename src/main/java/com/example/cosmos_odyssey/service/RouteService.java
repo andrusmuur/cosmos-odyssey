@@ -58,7 +58,7 @@ public class RouteService {
             case "distance":
                 travelPaths.sort(Comparator.comparing(TravelPath::getTotalDistance));
                 break;
-            case "travel_time":
+            case "travelTime":
                 travelPaths.sort(Comparator.comparing(TravelPath::getTotalTravelTimeInDays));
                 break;
         }

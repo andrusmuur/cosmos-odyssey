@@ -1,7 +1,6 @@
 package com.example.cosmos_odyssey.service;
 
 import com.example.cosmos_odyssey.model.Reservation;
-import com.example.cosmos_odyssey.model.ReservationRoute;
 import com.example.cosmos_odyssey.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,3 +1,36 @@
 .routeRow:hover {
-    background-color: beige;
+    background-color: #e0f0f5;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid;
+}
+
+th, td {
+    padding: 10px;
+}
+
+th {
+    background-color: lightblue;
+}
+
+* {
+    font-family: system-ui;
+}
+
+input {
+    padding: 5px;
+    margin: 5px 5px;
+}
+
+form {
+    display: table;
+    background-color: lightblue;
+    border: 1px solid;
+    padding: 10px;
 }

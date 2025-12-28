@@ -1,60 +1,72 @@
 async function fetchRoutes() {
+    var formData = new FormData(document.getElementById("routeForm"));
+    const origin = formData.get("origin");
+    const destination = formData.get("destination");
+    const sortBy = formData.get("sortBy");
+    const companyName = formData.get("companyName")
 
     try{
-
-        var formData = new FormData(document.getElementById("routeForm"));
-
-        const origin = formData.get("origin");
-        const destination = formData.get("destination");
-        const sortBy = formData.get("sort_by");
-        const companyName = formData.get("company_name")
-
         const response = await fetch(`/routes?origin=${origin}&destination=${destination}&sortBy=${sortBy}&companyName=${companyName}`);
 
         if (!response.ok) {
             throw new Error("Could not fetch resource");
         } else {
             const routes = await response.json();
-            var table = document.createElement("table");
-            var tr = table.insertRow(-1);
-
-            const tableHeaders = ["Path", "Providers", "Total price", "Total distance", "Total travel time in days"];
-            for (const header of tableHeaders) {
-                var th = document.createElement("th");
-                th.innerHTML = header;
-                tr.appendChild(th);
-            }
-
-            for (const route of routes) {
-                tr = table.insertRow(-1);
-                tr.dataset.route = JSON.stringify(route);
-                tr.setAttribute("onclick", "selectRow(this);");
-                tr.setAttribute("class", "routeRow");
-
-                var cell = tr.insertCell(-1);
-                cell.innerHTML = route.path.map((route) => route.fromPlanet + "->" + route.toPlanet);
-
-                cell = tr.insertCell(-1);
-                cell.innerHTML = route.pathProviders.map((provider) => provider.companyName);
-
-                cell = tr.insertCell(-1);
-                cell.innerHTML = route.totalPrice;
-
-                cell = tr.insertCell(-1);
-                cell.innerHTML = route.totalDistance;
-
-                cell = tr.insertCell(-1);
-                cell.innerHTML = route.totalTravelTimeInDays;
-            }
-
-            var routeTable = document.getElementById("routeTable");
-            routeTable.innerHTML = "";
-            routeTable.appendChild(table);
+            createTable(routes);
         }
     }
     catch(error) {
         console.error(error);
     }
+}
+
+function createTable(routes) {
+    var table = document.createElement("table");
+    var tr = table.insertRow(-1);
+
+    const tableHeaders = ["Path", "Providers", "First flight start", "Last flight end", "Total price", "Total distance", "Total travel time"];
+    for (const header of tableHeaders) {
+        var th = document.createElement("th");
+        th.innerHTML = header;
+        tr.appendChild(th);
+    }
+
+    for (const route of routes) {
+        tr = table.insertRow(-1);
+        tr.dataset.route = JSON.stringify(route);
+        tr.setAttribute("onclick", "selectRow(this);");
+        tr.setAttribute("class", "routeRow");
+
+        var cell = tr.insertCell(-1);
+        cell.innerHTML = route.path.map((route) => " " + route.fromPlanet + " -> " + route.toPlanet);
+
+        const providers = route.pathProviders;
+        cell = tr.insertCell(-1);
+        cell.innerHTML = providers.map((provider) => " " + provider.companyName);
+
+        cell = tr.insertCell(-1);
+        if (providers.length > 0) {
+            cell.innerHTML = providers[0].flightStart
+        }
+
+        cell = tr.insertCell(-1);
+        if (providers.length > 0) {
+            cell.innerHTML = providers[providers.length - 1].flightEnd
+        }
+
+        cell = tr.insertCell(-1);
+        cell.innerHTML = route.totalPrice;
+
+        cell = tr.insertCell(-1);
+        cell.innerHTML = route.totalDistance;
+
+        cell = tr.insertCell(-1);
+        cell.innerHTML = route.totalTravelTimeInDays + " days";
+    }
+
+    var routeTable = document.getElementById("routeTable");
+    routeTable.innerHTML = "";
+    routeTable.appendChild(table);
 }
 
 async function selectRow(row) {

@@ -7,37 +7,41 @@
 <body>
     <form id="routeForm">
         <label for="origin">Origin:</label>
-        <input type="text" id="origin" name="origin" required>
-
+        <input type="search" list="planets" id="origin" name="origin"><br>
         <label for="destination">Destination:</label>
-        <input type="text" id="destination" name="destination" required>
+        <input type="search" list="planets" id="destination" name="destination"><br>
 
-        <br>
+        <datalist id="planets">
+            <option value="Mercury"></option>
+            <option value="Venus"></option>
+            <option value="Earth"></option>
+            <option value="Mars"></option>
+            <option value="Jupiter"></option>
+            <option value="Saturn"></option>
+            <option value="Uranus"></option>
+            <option value="Neptune"></option>
+        </datalist>
 
-        <input type="radio" id="price" name="sort_by" value="price" checked>
-        <label for="price">Price</label><br>
-        <input type="radio" id="distance" name="sort_by" value="distance">
-        <label for="distance">Distance</label><br>
-        <input type="radio" id="travel_time" name="sort_by" value="travel_time">
-        <label for="travel_time">Travel time</label>
+        <p style="display: inline">Sort by:</p>
+        <input type="radio" id="price" name="sortBy" value="price" checked>
+        <label for="price">Price</label>
+        <input type="radio" id="distance" name="sortBy" value="distance">
+        <label for="distance">Distance</label>
+        <input type="radio" id="travelTime" name="sortBy" value="travelTime">
+        <label for="travelTime">Travel time</label><br>
 
-        <label for="company_name">Company name:</label>
-        <input type="text" id="company_name" name="company_name">
-
-        <br>
+        <label for="companyName">Company name:</label>
+        <input type="text" id="companyName" name="companyName"><br>
 
         <input type="button" onclick="fetchRoutes()" value="Find routes">
     </form>
 
-
     <br>
 
     <div>
+        <p>Please enter your first and last name, then select a route to make a reservation.</p>
         <label for="firstName">First name:</label>
-        <input type="text" id="firstName" name="firstName" required>
-    </div>
-
-    <div>
+        <input type="text" id="firstName" name="firstName" required><br>
         <label for="lastName">Last name:</label>
         <input type="text" id="lastName" name="lastName" required>
     </div>
